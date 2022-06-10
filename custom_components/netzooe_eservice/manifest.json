@@ -1,0 +1,16 @@
+{
+  "domain": "netzooe_eservice",
+  "name": "NetzOOE eService",
+  "config_flow": true,
+  "documentation": "https://www.home-assistant.io/integrations/netzooe_eservice",
+  "requirements": ["requests"],
+  "ssdp": [],
+  "zeroconf": [],
+  "homekit": {},
+  "dependencies": [],
+  "codeowners": [
+    "@VarChar42"
+  ],
+  "iot_class": "cloud_polling",
+  "version": "0.1.0"
+}
