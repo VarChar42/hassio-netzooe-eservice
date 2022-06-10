@@ -15,12 +15,9 @@ class EServiceApi:
         self._state = {}
 
     def login(self):
-        form_data = '{"j_username":"%s","j_password":"%s"}' % (
-            self._username,
-            self._password,
-        )
         response = requests.post(
-            "https://eservice.netzooe.at/service/j_security_check", form_data
+            "https://eservice.netzooe.at/service/j_security_check",
+            json={"j_username": self._username, "j_password": self._password},
         )
 
         self._logged_in = response.status_code == 200
