@@ -6,17 +6,17 @@ from homeassistant.util import Throttle
 
 MIN_TIME_BETWEEN_UPDATES = datetime.timedelta(hours=1)
 
-
 class EServiceApi:
-    def __init__(self, username, password):
+    def __init__(self, username, password, base_url):
         self._logged_in = False
         self._username = username
         self._password = password
+        self._base_url = base_url
         self._state = {}
 
     def login(self):
         response = requests.post(
-            "https://eservice.netzooe.at/service/j_security_check",
+            self._base_url + "/j_security_check",
             json={"j_username": self._username, "j_password": self._password},
         )
 
@@ -35,7 +35,7 @@ class EServiceApi:
         headers = {"Cookie": self._cookies}
 
         response = requests.get(
-            "https://eservice.netzooe.at/service/v1.0/dashboard",
+            self._base_url + "/v1.0/dashboard",
             headers={"Cookie": self._cookies},
         )
 
@@ -58,7 +58,7 @@ class EServiceApi:
             contract_account_number = account["contractAccountNumber"]
 
             response = requests.get(
-                "https://eservice.netzooe.at/service/v1.0/contract-accounts/"
+                self._base_url + "/v1.0/contract-accounts/"
                 + business_partner_number
                 + "/"
                 + contract_account_number,
