@@ -18,8 +18,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     
     username = entry.data["username"]
     password = entry.data["password"]
+    base_url = entry.data["base_url"]
 
-    api = EServiceApi(username, password)
+    api = EServiceApi(username, password, base_url)
 
     await hass.async_add_executor_job(api.update)
 
