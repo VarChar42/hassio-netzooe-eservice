@@ -1,46 +1,40 @@
 import requests
 import json
-import datetime
-
-from homeassistant.util import Throttle
-
-MIN_TIME_BETWEEN_UPDATES = datetime.timedelta(hours=1)
 
 
 class EServiceApi:
     def __init__(self, username, password):
-        self._logged_in = False
+        self._session = None
         self._username = username
         self._password = password
         self._state = {}
 
     def login(self):
-        response = requests.post(
+        self._session = requests.Session()
+        response = self._session.post(
             "https://eservice.netzooe.at/service/j_security_check",
             json={"j_username": self._username, "j_password": self._password},
         )
 
-        self._logged_in = response.status_code == 200
+        ok = response.status_code == 200
 
-        if self._logged_in:
-            self._cookies = response.headers["Set-Cookie"]
+        if not ok:
+            self._session = None
+        return ok
 
-        return self._logged_in
-
-    @Throttle(MIN_TIME_BETWEEN_UPDATES)
     def update(self):
-        if not self._logged_in:
+        if self._session == None:
             self.login()
-
-        headers = {"Cookie": self._cookies}
-
-        response = requests.get(
-            "https://eservice.netzooe.at/service/v1.0/dashboard",
-            headers={"Cookie": self._cookies},
+        
+        if self._session == None:
+            return
+        
+        response = self._session.get(
+            "https://eservice.netzooe.at/service/v1.0/dashboard"
         )
 
         if response.status_code != 200:
-            self._logged_in = False
+            self._session = None
             return
 
         dashboard = json.loads(response.text)
@@ -57,13 +51,15 @@ class EServiceApi:
 
             contract_account_number = account["contractAccountNumber"]
 
-            response = requests.get(
+            response = self._session.get(
                 "https://eservice.netzooe.at/service/v1.0/contract-accounts/"
                 + business_partner_number
                 + "/"
-                + contract_account_number,
-                headers=headers,
+                + contract_account_number
             )
+
+            if response.status_code != 200:
+                continue
 
             contracts = json.loads(response.text)["contracts"]
 

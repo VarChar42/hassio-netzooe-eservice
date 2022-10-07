@@ -1,5 +1,7 @@
 """NetzOOE power meter sensor"""
 from __future__ import annotations
+import datetime
+
 
 from homeassistant.components.sensor import (
     SensorDeviceClass,
@@ -11,7 +13,9 @@ from .eservice_api import EServiceApi
 from .const import DOMAIN
 
 from homeassistant.const import ENERGY_KILO_WATT_HOUR
+from homeassistant.util import Throttle
 
+MIN_TIME_BETWEEN_UPDATES = datetime.timedelta(hours=1)
 
 async def async_setup_entry(hass, entry, async_add_entities):
     entries = []
@@ -21,6 +25,8 @@ async def async_setup_entry(hass, entry, async_add_entities):
         entries.append(PowerMeter(api, meter, hass))
 
     async_add_entities(entries)
+
+
 
 
 class PowerMeter(SensorEntity):
@@ -37,8 +43,13 @@ class PowerMeter(SensorEntity):
     _attr_device_class = SensorDeviceClass.ENERGY
     _attr_state_class = SensorStateClass.TOTAL
 
+
+    @Throttle(MIN_TIME_BETWEEN_UPDATES)
+    def _update(self):
+        self._api.update()
+
     async def async_update(self):
         """Retrieve latest state."""
-        await self._hass.async_add_executor_job(self._api.update)
+        await self._hass.async_add_executor_job(self._update)
 
         self._attr_native_value = self._api.state[self._meter_id]
