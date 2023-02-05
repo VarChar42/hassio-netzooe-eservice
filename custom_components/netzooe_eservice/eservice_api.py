@@ -11,9 +11,13 @@ class EServiceApi:
 
     def login(self):
         self._session = requests.Session()
+
         response = self._session.post(
             "https://eservice.netzooe.at/service/j_security_check",
             json={"j_username": self._username, "j_password": self._password},
+            headers={
+                "client-id": "netzonline"
+            }
         )
 
         ok = response.status_code == 200
