@@ -1,16 +1,17 @@
 {
   "domain": "netzooe_eservice",
   "name": "NetzOOE eService",
+  "integration_type": "entity",
   "config_flow": true,
-  "documentation": "https://www.home-assistant.io/integrations/netzooe_eservice",
-  "requirements": ["requests"],
-  "ssdp": [],
-  "zeroconf": [],
-  "homekit": {},
+  "documentation": "https://github.com/VarChar42/hassio-netzooe-eservice",
+  "issue_tracker": "https://github.com/VarChar42/hassio-netzooe-eservice/issues",
+  "requirements": [
+    "requests"
+  ],
   "dependencies": [],
   "codeowners": [
     "@VarChar42"
   ],
   "iot_class": "cloud_polling",
-  "version": "0.1.0"
+  "version": "0.0.1"
 }
