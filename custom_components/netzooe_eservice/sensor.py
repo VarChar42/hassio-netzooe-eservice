@@ -19,7 +19,7 @@ from .eservice_api import EServiceApi
 from .const import DOMAIN
 
 from homeassistant.core import callback
-from homeassistant.const import ENERGY_KILO_WATT_HOUR
+from homeassistant.const import UnitOfEnergy
 from homeassistant.util import Throttle
 
 _LOGGER = logging.getLogger(__name__)
@@ -67,7 +67,7 @@ class PowerMeter(CoordinatorEntity, SensorEntity):
         self._attr_name = "netzooe_meter_%s" % meter_id
         self._get_api_state()
 
-    _attr_native_unit_of_measurement = ENERGY_KILO_WATT_HOUR
+    _attr_native_unit_of_measurement = UnitOfEnergy.KILO_WATT_HOUR
     _attr_device_class = SensorDeviceClass.ENERGY
     _attr_state_class = SensorStateClass.TOTAL
 
