@@ -13,33 +13,40 @@ from homeassistant.components.sensor import (
 from homeassistant.const import EntityCategory, UnitOfEnergy, UnitOfPower
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import DeviceInfo
-from homeassistant.helpers.update_coordinator import (
-    CoordinatorEntity,
-    DataUpdateCoordinator,
-    UpdateFailed,
-)
+from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import DOMAIN
-from .eservice_api import EServiceApi
 
 _LOGGER = logging.getLogger(__name__)
 
 
 async def async_setup_entry(hass: HomeAssistant, entry, async_add_entities):
     """Set up NetzOÖ sensors from a config entry."""
-    api: EServiceApi = hass.data[DOMAIN][entry.entry_id]
-    coordinator = ApiCoordinator(hass, api)
-    await coordinator.async_config_entry_first_refresh()
+    entry_data = hass.data[DOMAIN][entry.entry_id]
+    coordinator = entry_data["coordinator"]
 
     entities = []
-    data = api.data
+    data = coordinator.data
     seen_accounts = set()
+
+    # Unread messages sensor (account-level, uses first meter's device)
+    first_meter_device = None
 
     for meter_id, meter in data.get("meters", {}).items():
         device = _device_info(meter)
+        if first_meter_device is None:
+            first_meter_device = (meter_id, device)
 
         # Meter reading (total kWh)
         entities.append(MeterReadingSensor(coordinator, meter_id, device))
+
+        # Additional register sensors for multi-tariff meters (HT/NT)
+        registers = meter.get("meter_registers", [])
+        if len(registers) > 1:
+            for reg in registers:
+                ref = reg.get("reference_number", "")
+                if ref:
+                    entities.append(MeterRegisterSensor(coordinator, meter_id, ref, device))
 
         # Daily consumption from smart meter
         if meter.get("smart_meter_active"):
@@ -83,6 +90,10 @@ async def async_setup_entry(hass: HomeAssistant, entry, async_add_entities):
             entities.append(EnergyCommunityOwnCoverageSensor(coordinator, meter_id, ec_id, ec_name, device))
             entities.append(EnergyCommunityConsumptionSensor(coordinator, meter_id, ec_id, ec_name, device))
 
+    # Unread messages sensor
+    if first_meter_device:
+        entities.append(UnreadMessagesSensor(coordinator, first_meter_device[0], first_meter_device[1]))
+
     async_add_entities(entities)
 
 
@@ -98,30 +109,12 @@ def _device_info(meter: dict) -> DeviceInfo:
     )
 
 
-class ApiCoordinator(DataUpdateCoordinator):
-    """Coordinator to fetch data from NetzOÖ API."""
-
-    def __init__(self, hass: HomeAssistant, api: EServiceApi):
-        super().__init__(
-            hass, _LOGGER, name="NetzOÖ eService",
-            update_interval=datetime.timedelta(hours=1),
-        )
-        self.api = api
-
-    async def _async_update_data(self):
-        try:
-            await self.hass.async_add_executor_job(self.api.update)
-        except Exception as err:
-            raise UpdateFailed(f"Error fetching NetzOÖ data: {err}") from err
-        return self.api.data
-
-
 class _BaseSensor(CoordinatorEntity, SensorEntity):
     """Base sensor with translation support."""
 
     _attr_has_entity_name = True
 
-    def __init__(self, coordinator: ApiCoordinator, meter_id: str, device: DeviceInfo):
+    def __init__(self, coordinator, meter_id: str, device: DeviceInfo):
         super().__init__(coordinator)
         self._meter_id = meter_id
         self._attr_device_info = device
@@ -324,10 +317,21 @@ class LastInvoiceAmountSensor(_BaseSensor):
         invoices = account.get("invoices", [])
         if not invoices:
             return {}
-        return {
+        attrs = {
             "invoice_number": invoices[0].get("number", ""),
             "invoice_date": invoices[0].get("date", ""),
         }
+        # Include full invoice history
+        if len(invoices) > 1:
+            attrs["all_invoices"] = [
+                {
+                    "number": inv.get("number", ""),
+                    "date": inv.get("date", ""),
+                    "total": inv.get("total", 0),
+                }
+                for inv in invoices
+            ]
+        return attrs
 
 
 class LastInvoiceDateSensor(_BaseSensor):
@@ -509,3 +513,58 @@ class EnergyCommunityConsumptionSensor(_BaseSensor):
             if ec["id"] == self._ec_id:
                 return ec.get("consumption")
         return None
+
+
+# ── Multi-register sensor ─────────────────────────────────────────────
+
+
+class MeterRegisterSensor(_BaseSensor):
+    """Individual meter register reading (for multi-tariff meters)."""
+
+    _attr_translation_key = "meter_register"
+    _attr_device_class = SensorDeviceClass.ENERGY
+    _attr_state_class = SensorStateClass.TOTAL
+    _attr_native_unit_of_measurement = UnitOfEnergy.KILO_WATT_HOUR
+
+    def __init__(self, coordinator, meter_id, reference_number, device):
+        super().__init__(coordinator, meter_id, device)
+        self._reference_number = reference_number
+        self._attr_unique_id = f"{meter_id}_register_{reference_number}"
+        self._attr_translation_placeholders = {"register_ref": reference_number}
+
+    @property
+    def native_value(self):
+        for reg in self._meter().get("meter_registers", []):
+            if reg.get("reference_number") == self._reference_number:
+                return reg.get("value")
+        return None
+
+    @property
+    def extra_state_attributes(self):
+        for reg in self._meter().get("meter_registers", []):
+            if reg.get("reference_number") == self._reference_number:
+                attrs = {"reference_number": self._reference_number}
+                if reg.get("timestamp"):
+                    attrs["last_reading_time"] = reg["timestamp"]
+                return attrs
+        return {}
+
+
+# ── Messages sensor ───────────────────────────────────────────────────
+
+
+class UnreadMessagesSensor(_BaseSensor):
+    """Number of unread partner messages."""
+
+    _attr_translation_key = "unread_messages"
+    _attr_icon = "mdi:email-outline"
+    _attr_state_class = SensorStateClass.MEASUREMENT
+
+    def __init__(self, coordinator, meter_id, device):
+        super().__init__(coordinator, meter_id, device)
+        self._attr_unique_id = f"{DOMAIN}_unread_messages"
+
+    @property
+    def native_value(self):
+        messages = self.coordinator.data.get("messages", [])
+        return len([m for m in messages if not m.get("read", True)])

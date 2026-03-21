@@ -68,6 +68,26 @@
       },
       "ec_consumption": {
         "name": "{energy_community_name} consumption"
+      },
+      "meter_register": {
+        "name": "Register {register_ref}"
+      },
+      "unread_messages": {
+        "name": "Unread messages"
+      }
+    },
+    "binary_sensor": {
+      "smart_meter_active": {
+        "name": "Smart meter active"
+      },
+      "disconnection_notification": {
+        "name": "Disconnection notification"
+      },
+      "paperless_billing": {
+        "name": "Paperless billing"
+      },
+      "ec_active": {
+        "name": "{energy_community_name} active"
       }
     }
   }

@@ -27,6 +27,20 @@ Originally created by [@VarChar42](https://github.com/VarChar42/hassio-netzooe-e
 | **Installment Amount** | Current monthly installment (EUR) |
 | **Next Installment Date** | Next payment due date |
 
+### Other Sensors
+| Sensor | Description |
+|---|---|
+| **Unread Messages** | Number of unread partner messages in your inbox |
+| **Register {ref}** | Individual register readings for multi-tariff meters (HT/NT) |
+
+### Binary Sensors
+| Sensor | Description |
+|---|---|
+| **Smart Meter Active** | Whether the smart meter is active |
+| **Disconnection Notification** | Whether there is a disconnection notification |
+| **Paperless Billing** | Whether paperless billing is enabled |
+| **{Community} Active** | Whether the energy community membership is active |
+
 ### Diagnostic Sensors
 | Sensor | Description |
 |---|---|
@@ -40,7 +54,7 @@ Originally created by [@VarChar42](https://github.com/VarChar42/hassio-netzooe-e
 | **Own Coverage** | Energy covered by the community (kWh/day) |
 | **Consumption** | Consumption per contribution factor (kWh/day) |
 
-All sensors are grouped under a device per meter, with proper device info (manufacturer, model, link to portal).
+All sensors are grouped under a device per meter, with proper device info (manufacturer, model, link to portal). The last invoice sensor includes full invoice history in `extra_state_attributes`.
 
 ## Requirements
 

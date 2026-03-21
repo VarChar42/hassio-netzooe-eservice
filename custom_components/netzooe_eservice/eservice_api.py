@@ -10,6 +10,7 @@ from .const import (
     CONTRACT_ACCOUNT_URL,
     DASHBOARD_URL,
     LOGIN_URL,
+    PARTNER_MESSAGES_URL,
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -161,7 +162,13 @@ class EServiceApi:
             },
             "accounts": {},
             "meters": {},
+            "messages": [],
         }
+
+        # Fetch partner messages
+        messages_data = self._get(PARTNER_MESSAGES_URL)
+        if messages_data:
+            result["messages"] = messages_data.get("partnerMessages", [])
 
         for account in dashboard.get("contractAccounts", []):
             if not account.get("active"):
@@ -180,6 +187,7 @@ class EServiceApi:
                 "branch": ca_data.get("branch", ""),
                 "invoices": [],
                 "installment": None,
+                "paperless": ca_data.get("invoiceSettings", {}).get("paperless", "") == "PAPERLESS",
             }
 
             # Invoices
@@ -232,8 +240,12 @@ class EServiceApi:
                     "address": account_info["address"],
                 }
 
-                # Meter reading
+                # Disconnection notification
+                meter_info["disconnection_notification"] = contract.get("disconnectionNotification") is not None
+
+                # Meter readings - all registers
                 readings = pod.get("lastReadings", {}).get("values", [])
+                meter_info["meter_registers"] = []
                 if readings:
                     reading = readings[0]
                     raw_value = reading.get("newResult", {}).get("readingValue")
@@ -242,6 +254,20 @@ class EServiceApi:
                     except (TypeError, ValueError):
                         meter_info["meter_reading"] = None
                     meter_info["meter_reading_timestamp"] = reading.get("newResult", {}).get("timestamp")
+
+                    # Store all registers for multi-tariff meters
+                    for reg in readings:
+                        raw = reg.get("newResult", {}).get("readingValue")
+                        try:
+                            reg_value = float(raw) if raw is not None else None
+                        except (TypeError, ValueError):
+                            reg_value = None
+                        meter_info["meter_registers"].append({
+                            "reference_number": reg.get("referenceNumber", ""),
+                            "register_number": reg.get("registernumber", ""),
+                            "value": reg_value,
+                            "timestamp": reg.get("newResult", {}).get("timestamp"),
+                        })
                 else:
                     meter_info["meter_reading"] = None
                     meter_info["meter_reading_timestamp"] = None
