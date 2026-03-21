@@ -1,0 +1,74 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "NetzOÖ eService Anmeldung",
+        "description": "Geben Sie Ihre Zugangsdaten für das NetzOÖ eService Portal ein.",
+        "data": {
+          "username": "Benutzername",
+          "password": "Passwort"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Verbindung zu NetzOÖ eService fehlgeschlagen",
+      "invalid_auth": "Benutzername oder Passwort ungültig",
+      "unknown": "Unerwarteter Fehler"
+    },
+    "abort": {
+      "already_configured": "Dieses Konto ist bereits konfiguriert"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "meter_reading": {
+        "name": "Zählerstand"
+      },
+      "daily_consumption": {
+        "name": "Tagesverbrauch"
+      },
+      "weekly_consumption": {
+        "name": "Wochenverbrauch"
+      },
+      "monthly_consumption": {
+        "name": "Monatsverbrauch"
+      },
+      "monthly_consumption_previous": {
+        "name": "Vormonat Verbrauch"
+      },
+      "daily_average": {
+        "name": "Tagesdurchschnitt"
+      },
+      "contract_power": {
+        "name": "Vertragsleistung"
+      },
+      "last_invoice_amount": {
+        "name": "Letzte Rechnung Betrag"
+      },
+      "last_invoice_date": {
+        "name": "Letzte Rechnung Datum"
+      },
+      "installment_amount": {
+        "name": "Teilbetrag"
+      },
+      "next_installment_date": {
+        "name": "Nächste Teilzahlung"
+      },
+      "supplier": {
+        "name": "Energielieferant"
+      },
+      "smart_meter_type": {
+        "name": "Smart-Meter-Typ"
+      },
+      "grid_traffic_light": {
+        "name": "Netzampel"
+      },
+      "ec_own_coverage": {
+        "name": "{energy_community_name} Eigendeckung"
+      },
+      "ec_consumption": {
+        "name": "{energy_community_name} Verbrauch"
+      }
+    }
+  }
+}
