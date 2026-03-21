@@ -1,21 +1,74 @@
 {
-    "config": {
-        "abort": {
-            "already_configured": "Device is already configured"
-        },
-        "error": {
-            "cannot_connect": "Failed to connect",
-            "invalid_auth": "Invalid authentication",
-            "unknown": "Unexpected error"
-        },
-        "step": {
-            "user": {
-                "data": {
-                    "host": "Host",
-                    "password": "Password",
-                    "username": "Username"
-                }
-            }
+  "config": {
+    "step": {
+      "user": {
+        "title": "NetzOÖ eService Login",
+        "description": "Enter your NetzOÖ eService portal credentials.",
+        "data": {
+          "username": "Username",
+          "password": "Password"
         }
+      }
+    },
+    "error": {
+      "cannot_connect": "Failed to connect to NetzOÖ eService",
+      "invalid_auth": "Invalid username or password",
+      "unknown": "Unexpected error"
+    },
+    "abort": {
+      "already_configured": "This account is already configured"
     }
+  },
+  "entity": {
+    "sensor": {
+      "meter_reading": {
+        "name": "Meter reading"
+      },
+      "daily_consumption": {
+        "name": "Daily consumption"
+      },
+      "weekly_consumption": {
+        "name": "Weekly consumption"
+      },
+      "monthly_consumption": {
+        "name": "Monthly consumption"
+      },
+      "monthly_consumption_previous": {
+        "name": "Previous month consumption"
+      },
+      "daily_average": {
+        "name": "Daily average"
+      },
+      "contract_power": {
+        "name": "Contract power"
+      },
+      "last_invoice_amount": {
+        "name": "Last invoice amount"
+      },
+      "last_invoice_date": {
+        "name": "Last invoice date"
+      },
+      "installment_amount": {
+        "name": "Installment amount"
+      },
+      "next_installment_date": {
+        "name": "Next installment date"
+      },
+      "supplier": {
+        "name": "Supplier"
+      },
+      "smart_meter_type": {
+        "name": "Smart meter type"
+      },
+      "grid_traffic_light": {
+        "name": "Grid traffic light"
+      },
+      "ec_own_coverage": {
+        "name": "{energy_community_name} own coverage"
+      },
+      "ec_consumption": {
+        "name": "{energy_community_name} consumption"
+      }
+    }
+  }
 }

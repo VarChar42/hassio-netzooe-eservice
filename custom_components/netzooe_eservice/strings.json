@@ -2,6 +2,8 @@
   "config": {
     "step": {
       "user": {
+        "title": "NetzOÖ eService Login",
+        "description": "Enter your NetzOÖ eService portal credentials.",
         "data": {
           "username": "[%key:common::config_flow::data::username%]",
           "password": "[%key:common::config_flow::data::password%]"
@@ -14,7 +16,59 @@
       "unknown": "[%key:common::config_flow::error::unknown%]"
     },
     "abort": {
-      "already_configured": "[%key:common::config_flow::abort::already_configured_device%]"
+      "already_configured": "[%key:common::config_flow::abort::already_configured_account%]"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "meter_reading": {
+        "name": "Meter reading"
+      },
+      "daily_consumption": {
+        "name": "Daily consumption"
+      },
+      "weekly_consumption": {
+        "name": "Weekly consumption"
+      },
+      "monthly_consumption": {
+        "name": "Monthly consumption"
+      },
+      "monthly_consumption_previous": {
+        "name": "Previous month consumption"
+      },
+      "daily_average": {
+        "name": "Daily average"
+      },
+      "contract_power": {
+        "name": "Contract power"
+      },
+      "last_invoice_amount": {
+        "name": "Last invoice amount"
+      },
+      "last_invoice_date": {
+        "name": "Last invoice date"
+      },
+      "installment_amount": {
+        "name": "Installment amount"
+      },
+      "next_installment_date": {
+        "name": "Next installment date"
+      },
+      "supplier": {
+        "name": "Supplier"
+      },
+      "smart_meter_type": {
+        "name": "Smart meter type"
+      },
+      "grid_traffic_light": {
+        "name": "Grid traffic light"
+      },
+      "ec_own_coverage": {
+        "name": "{energy_community_name} own coverage"
+      },
+      "ec_consumption": {
+        "name": "{energy_community_name} consumption"
+      }
     }
   }
 }
