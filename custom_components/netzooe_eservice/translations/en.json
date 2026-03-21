@@ -8,6 +8,13 @@
           "username": "Username",
           "password": "Password"
         }
+      },
+      "reauth_confirm": {
+        "title": "Re-authenticate NetzOÖ eService",
+        "description": "Credentials for {username} have expired. Please enter your new password.",
+        "data": {
+          "password": "Password"
+        }
       }
     },
     "error": {
@@ -16,7 +23,18 @@
       "unknown": "Unexpected error"
     },
     "abort": {
-      "already_configured": "This account is already configured"
+      "already_configured": "This account is already configured",
+      "reauth_successful": "Re-authentication successful"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "NetzOÖ eService Options",
+        "data": {
+          "scan_interval": "Update interval (minutes)"
+        }
+      }
     }
   },
   "entity": {
@@ -74,6 +92,15 @@
       },
       "unread_messages": {
         "name": "Unread messages"
+      },
+      "total_consumption": {
+        "name": "Total billing consumption"
+      },
+      "move_in_date": {
+        "name": "Move-in date"
+      },
+      "address": {
+        "name": "Address"
       }
     },
     "binary_sensor": {

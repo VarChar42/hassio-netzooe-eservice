@@ -14,7 +14,7 @@ from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import DOMAIN
-from .sensor import _device_info
+from .helpers import device_info
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -29,7 +29,7 @@ async def async_setup_entry(hass: HomeAssistant, entry, async_add_entities):
     seen_accounts = set()
 
     for meter_id, meter in data.get("meters", {}).items():
-        device = _device_info(meter)
+        device = device_info(meter)
 
         # Smart meter active
         entities.append(SmartMeterActiveSensor(coordinator, meter_id, device))
@@ -45,8 +45,8 @@ async def async_setup_entry(hass: HomeAssistant, entry, async_add_entities):
 
         # Energy community active sensors
         for ec in meter.get("energy_communities", []):
-            ec_id = ec["id"]
-            ec_name = ec["name"]
+            ec_id = ec.get("id", "")
+            ec_name = ec.get("name", "")
             entities.append(EnergyCommunityActiveSensor(coordinator, meter_id, ec_id, ec_name, device))
 
     async_add_entities(entities)
@@ -128,7 +128,7 @@ class EnergyCommunityActiveSensor(_BaseBinarySensor):
     def __init__(self, coordinator, meter_id, ec_id, ec_name, device):
         super().__init__(coordinator, meter_id, device)
         self._ec_id = ec_id
-        self._attr_unique_id = f"{meter_id}_ec_{hashlib.md5(ec_id.encode()).hexdigest()[:12]}_active"
+        self._attr_unique_id = f"{meter_id}_ec_{hashlib.sha256(ec_id.encode()).hexdigest()[:12]}_active"
         self._attr_translation_placeholders = {"energy_community_name": ec_name}
 
     @property

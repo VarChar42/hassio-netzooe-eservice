@@ -51,6 +51,9 @@ class EServiceApi:
 
     def _get(self, url):
         """GET request with automatic re-login on 401."""
+        if self._session is None:
+            _LOGGER.error("No active session for GET %s", url)
+            return None
         response = self._session.get(url, timeout=REQUEST_TIMEOUT)
         if response.status_code == 401:
             _LOGGER.debug("Got 401, re-logging in")
@@ -67,6 +70,9 @@ class EServiceApi:
 
     def _post(self, url, json_data):
         """POST request with XSRF token and automatic re-login on 401."""
+        if self._session is None:
+            _LOGGER.error("No active session for POST %s", url)
+            return None
         xsrf = self._session.cookies.get("XSRF-TOKEN", "")
         headers = {}
         if xsrf:
@@ -77,7 +83,10 @@ class EServiceApi:
             _LOGGER.debug("Got 401 on POST, re-logging in")
             if self.login():
                 # Re-fetch XSRF after new login
-                self._session.get(DASHBOARD_URL, timeout=REQUEST_TIMEOUT)
+                dash_resp = self._session.get(DASHBOARD_URL, timeout=REQUEST_TIMEOUT)
+                if dash_resp.status_code != 200:
+                    _LOGGER.error("Failed to fetch XSRF token: %s", dash_resp.status_code)
+                    return None
                 xsrf = self._session.cookies.get("XSRF-TOKEN", "")
                 if xsrf:
                     headers["X-XSRF-TOKEN"] = xsrf
@@ -395,12 +404,3 @@ class EServiceApi:
     @property
     def data(self):
         return self._data
-
-    @property
-    def state(self):
-        """Legacy property: return {meter_number: reading_value} for backward compat."""
-        meters = {}
-        for meter_id, info in self._data.get("meters", {}).items():
-            if info.get("meter_reading") is not None:
-                meters[meter_id] = info["meter_reading"]
-        return meters

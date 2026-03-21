@@ -17,12 +17,14 @@ Originally created by [@VarChar42](https://github.com/VarChar42/hassio-netzooe-e
 | **Monthly Consumption** | Current 30-day period energy usage (kWh) |
 | **Previous Month Consumption** | Previous 30-day period energy usage (kWh) |
 | **Daily Average** | Average daily consumption for current period (kWh/day) |
+| **Total Billing Consumption** | Total kWh for the current billing period, with per-period breakdown in attributes |
 | **Contract Power** | Contracted power capacity (kW) |
+| **Register {ref}** | Individual register readings for multi-tariff meters (HT/NT, e.g. 1.8.1, 1.8.2) |
 
 ### Financial Sensors
 | Sensor | Description |
 |---|---|
-| **Last Invoice Amount** | Most recent invoice total (EUR) |
+| **Last Invoice Amount** | Most recent invoice total (EUR), full invoice history in attributes |
 | **Last Invoice Date** | Date of the most recent invoice |
 | **Installment Amount** | Current monthly installment (EUR) |
 | **Next Installment Date** | Next payment due date |
@@ -31,7 +33,6 @@ Originally created by [@VarChar42](https://github.com/VarChar42/hassio-netzooe-e
 | Sensor | Description |
 |---|---|
 | **Unread Messages** | Number of unread partner messages in your inbox |
-| **Register {ref}** | Individual register readings for multi-tariff meters (HT/NT) |
 
 ### Binary Sensors
 | Sensor | Description |
@@ -47,6 +48,8 @@ Originally created by [@VarChar42](https://github.com/VarChar42/hassio-netzooe-e
 | **Supplier** | Current energy supplier name |
 | **Smart Meter Type** | Meter hardware type (e.g. Advanced Smart Meter) |
 | **Grid Traffic Light** | Grid capacity indicator (RED / YELLOW / GREEN) |
+| **Move-in Date** | Contract start date |
+| **Address** | Supply point address |
 
 ### Energy Community Sensors (per community)
 | Sensor | Description |
@@ -54,7 +57,7 @@ Originally created by [@VarChar42](https://github.com/VarChar42/hassio-netzooe-e
 | **Own Coverage** | Energy covered by the community (kWh/day) |
 | **Consumption** | Consumption per contribution factor (kWh/day) |
 
-All sensors are grouped under a device per meter, with proper device info (manufacturer, model, link to portal). The last invoice sensor includes full invoice history in `extra_state_attributes`.
+All sensors are grouped under a device per meter, with proper device info (manufacturer, model, link to portal).
 
 ## Requirements
 
@@ -83,14 +86,29 @@ All sensors are grouped under a device per meter, with proper device info (manuf
 3. Enter your eService portal username and password
 4. Credentials are validated during setup
 
+### Options
+
+After setup, click **Configure** on the integration to adjust:
+
+- **Update interval** - polling frequency in minutes (default: 60, min: 15, max: 1440)
+
+### Re-authentication
+
+If your credentials expire, the integration will prompt you to re-enter them through the Home Assistant UI instead of silently failing.
+
+### Diagnostics
+
+Use **Settings > Devices & Services > NetzOÖ eService > Download diagnostics** to export a sanitized snapshot of your integration data for troubleshooting. All personal information is redacted.
+
 ## How It Works
 
-The integration authenticates with the NetzOÖ eService API and polls the following endpoints hourly:
+The integration authenticates with the NetzOÖ eService API and polls the following endpoints:
 
 - **Dashboard** - account and contract overview
 - **Contract Accounts** - meter readings, monthly trends, invoices, installments, energy community memberships
 - **Consumption Profiles** - daily smart meter readings (last 7 days)
 - **Energy Community Profiles** - own coverage and consumption per community
+- **Partner Messages** - inbox message count
 
 ## Translations
 

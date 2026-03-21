@@ -16,6 +16,7 @@ from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import DOMAIN
+from .helpers import device_info
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -33,7 +34,7 @@ async def async_setup_entry(hass: HomeAssistant, entry, async_add_entities):
     first_meter_device = None
 
     for meter_id, meter in data.get("meters", {}).items():
-        device = _device_info(meter)
+        device = device_info(meter)
         if first_meter_device is None:
             first_meter_device = (meter_id, device)
 
@@ -75,6 +76,10 @@ async def async_setup_entry(hass: HomeAssistant, entry, async_add_entities):
                 entities.append(InstallmentAmountSensor(coordinator, meter_id, can, device))
                 entities.append(NextInstallmentDateSensor(coordinator, meter_id, can, device))
 
+        # Total billing consumption
+        if meter.get("total_consumption"):
+            entities.append(TotalConsumptionSensor(coordinator, meter_id, device))
+
         # Diagnostic sensors
         if meter.get("supplier"):
             entities.append(SupplierSensor(coordinator, meter_id, device))
@@ -82,11 +87,15 @@ async def async_setup_entry(hass: HomeAssistant, entry, async_add_entities):
             entities.append(SmartMeterTypeSensor(coordinator, meter_id, device))
         if meter.get("traffic_light"):
             entities.append(GridTrafficLightSensor(coordinator, meter_id, device))
+        if meter.get("move_in_date"):
+            entities.append(MoveInDateSensor(coordinator, meter_id, device))
+        if meter.get("address"):
+            entities.append(AddressSensor(coordinator, meter_id, device))
 
         # Energy community sensors
         for ec in meter.get("energy_communities", []):
-            ec_id = ec["id"]
-            ec_name = ec["name"]
+            ec_id = ec.get("id", "")
+            ec_name = ec.get("name", "")
             entities.append(EnergyCommunityOwnCoverageSensor(coordinator, meter_id, ec_id, ec_name, device))
             entities.append(EnergyCommunityConsumptionSensor(coordinator, meter_id, ec_id, ec_name, device))
 
@@ -95,18 +104,6 @@ async def async_setup_entry(hass: HomeAssistant, entry, async_add_entities):
         entities.append(UnreadMessagesSensor(coordinator, first_meter_device[0], first_meter_device[1]))
 
     async_add_entities(entities)
-
-
-def _device_info(meter: dict) -> DeviceInfo:
-    """Create device info for a meter."""
-    return DeviceInfo(
-        identifiers={(DOMAIN, meter["meter_number"])},
-        name=f"NetzOÖ Meter {meter['meter_number']}",
-        manufacturer="Netz Oberösterreich",
-        model=meter.get("smart_meter_type", "Unknown"),
-        sw_version=meter.get("scale_type", ""),
-        configuration_url="https://eservice.netzooe.at/app/portal/dashboard",
-    )
 
 
 class _BaseSensor(CoordinatorEntity, SensorEntity):
@@ -131,7 +128,7 @@ class MeterReadingSensor(_BaseSensor):
 
     _attr_translation_key = "meter_reading"
     _attr_device_class = SensorDeviceClass.ENERGY
-    _attr_state_class = SensorStateClass.TOTAL
+    _attr_state_class = SensorStateClass.TOTAL_INCREASING
     _attr_native_unit_of_measurement = UnitOfEnergy.KILO_WATT_HOUR
 
     def __init__(self, coordinator, meter_id, device):
@@ -205,7 +202,7 @@ class MonthlyConsumptionSensor(_BaseSensor):
     @property
     def native_value(self):
         trend = self._meter().get("monthly_trend_current")
-        return trend["sum"] if trend else None
+        return trend.get("sum") if trend else None
 
     @property
     def extra_state_attributes(self):
@@ -235,7 +232,7 @@ class MonthlyConsumptionPreviousSensor(_BaseSensor):
     @property
     def native_value(self):
         trend = self._meter().get("monthly_trend_previous")
-        return trend["sum"] if trend else None
+        return trend.get("sum") if trend else None
 
     @property
     def extra_state_attributes(self):
@@ -253,9 +250,8 @@ class DailyAverageSensor(_BaseSensor):
     """Average daily consumption for current period (kWh/day)."""
 
     _attr_translation_key = "daily_average"
-    _attr_device_class = SensorDeviceClass.ENERGY
     _attr_state_class = SensorStateClass.MEASUREMENT
-    _attr_native_unit_of_measurement = UnitOfEnergy.KILO_WATT_HOUR
+    _attr_native_unit_of_measurement = "kWh/d"
     _attr_icon = "mdi:chart-line"
 
     def __init__(self, coordinator, meter_id, device):
@@ -275,7 +271,6 @@ class ContractPowerSensor(_BaseSensor):
 
     _attr_translation_key = "contract_power"
     _attr_device_class = SensorDeviceClass.POWER
-    _attr_state_class = SensorStateClass.MEASUREMENT
     _attr_native_unit_of_measurement = UnitOfPower.KILO_WATT
     _attr_icon = "mdi:flash"
 
@@ -309,7 +304,7 @@ class LastInvoiceAmountSensor(_BaseSensor):
     def native_value(self):
         account = self.coordinator.data.get("accounts", {}).get(self._can, {})
         invoices = account.get("invoices", [])
-        return invoices[0]["total"] if invoices else None
+        return invoices[0].get("total") if invoices else None
 
     @property
     def extra_state_attributes(self):
@@ -376,7 +371,7 @@ class InstallmentAmountSensor(_BaseSensor):
     def native_value(self):
         account = self.coordinator.data.get("accounts", {}).get(self._can, {})
         inst = account.get("installment")
-        return inst["amount"] if inst else None
+        return inst.get("amount") if inst else None
 
     @property
     def extra_state_attributes(self):
@@ -481,7 +476,7 @@ class EnergyCommunityOwnCoverageSensor(_BaseSensor):
     def __init__(self, coordinator, meter_id, ec_id, ec_name, device):
         super().__init__(coordinator, meter_id, device)
         self._ec_id = ec_id
-        self._attr_unique_id = f"{meter_id}_ec_{hashlib.md5(ec_id.encode()).hexdigest()[:12]}_own_coverage"
+        self._attr_unique_id = f"{meter_id}_ec_{hashlib.sha256(ec_id.encode()).hexdigest()[:12]}_own_coverage"
         self._attr_translation_placeholders = {"energy_community_name": ec_name}
 
     @property
@@ -504,7 +499,7 @@ class EnergyCommunityConsumptionSensor(_BaseSensor):
     def __init__(self, coordinator, meter_id, ec_id, ec_name, device):
         super().__init__(coordinator, meter_id, device)
         self._ec_id = ec_id
-        self._attr_unique_id = f"{meter_id}_ec_{hashlib.md5(ec_id.encode()).hexdigest()[:12]}_consumption"
+        self._attr_unique_id = f"{meter_id}_ec_{hashlib.sha256(ec_id.encode()).hexdigest()[:12]}_consumption"
         self._attr_translation_placeholders = {"energy_community_name": ec_name}
 
     @property
@@ -523,7 +518,7 @@ class MeterRegisterSensor(_BaseSensor):
 
     _attr_translation_key = "meter_register"
     _attr_device_class = SensorDeviceClass.ENERGY
-    _attr_state_class = SensorStateClass.TOTAL
+    _attr_state_class = SensorStateClass.TOTAL_INCREASING
     _attr_native_unit_of_measurement = UnitOfEnergy.KILO_WATT_HOUR
 
     def __init__(self, coordinator, meter_id, reference_number, device):
@@ -568,3 +563,81 @@ class UnreadMessagesSensor(_BaseSensor):
     def native_value(self):
         messages = self.coordinator.data.get("messages", [])
         return len([m for m in messages if not m.get("read", True)])
+
+
+# ── Additional sensors ────────────────────────────────────────────────
+
+
+class TotalConsumptionSensor(_BaseSensor):
+    """Total billing period consumption (kWh)."""
+
+    _attr_translation_key = "total_consumption"
+    _attr_device_class = SensorDeviceClass.ENERGY
+    _attr_state_class = SensorStateClass.MEASUREMENT
+    _attr_native_unit_of_measurement = UnitOfEnergy.KILO_WATT_HOUR
+    _attr_icon = "mdi:sigma"
+
+    def __init__(self, coordinator, meter_id, device):
+        super().__init__(coordinator, meter_id, device)
+        self._attr_unique_id = f"{meter_id}_total_consumption"
+
+    @property
+    def native_value(self):
+        return self._meter().get("total_consumption")
+
+    @property
+    def extra_state_attributes(self):
+        periods = self._meter().get("consumption_periods", [])
+        if not periods:
+            return {}
+        return {
+            "periods": [
+                {
+                    "from": p.get("from", ""),
+                    "to": p.get("to", ""),
+                    "value": p.get("value", 0),
+                    "days": p.get("days", 0),
+                    "per_day": p.get("per_day", 0),
+                }
+                for p in periods
+            ]
+        }
+
+
+class MoveInDateSensor(_BaseSensor):
+    """Contract move-in date."""
+
+    _attr_translation_key = "move_in_date"
+    _attr_device_class = SensorDeviceClass.DATE
+    _attr_entity_category = EntityCategory.DIAGNOSTIC
+    _attr_icon = "mdi:home-import-outline"
+
+    def __init__(self, coordinator, meter_id, device):
+        super().__init__(coordinator, meter_id, device)
+        self._attr_unique_id = f"{meter_id}_move_in_date"
+
+    @property
+    def native_value(self):
+        d = self._meter().get("move_in_date")
+        if d:
+            try:
+                return datetime.date.fromisoformat(d)
+            except ValueError:
+                return None
+        return None
+
+
+class AddressSensor(_BaseSensor):
+    """Supply point address."""
+
+    _attr_translation_key = "address"
+    _attr_entity_category = EntityCategory.DIAGNOSTIC
+    _attr_icon = "mdi:map-marker"
+
+    def __init__(self, coordinator, meter_id, device):
+        super().__init__(coordinator, meter_id, device)
+        self._attr_unique_id = f"{meter_id}_address"
+
+    @property
+    def native_value(self):
+        return self._meter().get("address")
