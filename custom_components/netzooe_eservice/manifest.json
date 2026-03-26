@@ -6,7 +6,6 @@
   ],
   "config_flow": true,
   "dependencies": [],
-  "homeassistant": "2024.1.0",
   "documentation": "https://github.com/VarChar42/hassio-netzooe-eservice",
   "integration_type": "hub",
   "iot_class": "cloud_polling",
