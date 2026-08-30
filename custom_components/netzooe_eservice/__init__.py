@@ -23,7 +23,12 @@ DEFAULT_SCAN_INTERVAL = 60  # minutes
 class ApiCoordinator(DataUpdateCoordinator):
     """Coordinator to fetch data from NetzOÖ API."""
 
-    def __init__(self, hass: HomeAssistant, api: EServiceApi, scan_interval_min: int = DEFAULT_SCAN_INTERVAL):
+    def __init__(
+        self,
+        hass: HomeAssistant,
+        api: EServiceApi,
+        scan_interval_min: int = DEFAULT_SCAN_INTERVAL,
+    ):
         super().__init__(
             hass, _LOGGER, name="NetzOÖ eService",
             update_interval=datetime.timedelta(minutes=scan_interval_min),
@@ -37,7 +42,7 @@ class ApiCoordinator(DataUpdateCoordinator):
             if "login" in str(err).lower():
                 raise ConfigEntryAuthFailed(str(err)) from err
             raise UpdateFailed(f"Error fetching NetzOÖ data: {err}") from err
-        except Exception as err:
+        except (OSError, ValueError, RuntimeError) as err:
             raise UpdateFailed(f"Error fetching NetzOÖ data: {err}") from err
         return self.api.data
 
@@ -47,9 +52,11 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     api = EServiceApi(entry.data["username"], entry.data["password"])
     try:
         await hass.async_add_executor_job(api.update)
-    except Exception as err:
+    except (ConnectionError, OSError, ValueError, RuntimeError) as err:
         await hass.async_add_executor_job(api.close)
-        raise ConfigEntryNotReady(f"Failed to connect to NetzOÖ eService: {err}") from err
+        raise ConfigEntryNotReady(
+            f"Failed to connect to NetzOÖ eService: {err}"
+        ) from err
 
     scan_interval = entry.options.get("scan_interval", DEFAULT_SCAN_INTERVAL)
     coordinator = ApiCoordinator(hass, api, scan_interval)

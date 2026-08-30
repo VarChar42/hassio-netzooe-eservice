@@ -123,4 +123,4 @@ The integration is available in:
 
 ## License
 
-This project is provided as-is. See the original repository for license details.
+This project is licensed under the MIT License. See `LICENSE` for details.

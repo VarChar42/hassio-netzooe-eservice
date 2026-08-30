@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import datetime
+from enum import Enum
 import hashlib
 import logging
 
@@ -10,10 +11,33 @@ from homeassistant.components.sensor import (
     SensorEntity,
     SensorStateClass,
 )
-from homeassistant.const import EntityCategory, UnitOfEnergy, UnitOfPower
+try:
+    from homeassistant.const import UnitOfEnergy, UnitOfPower
+except ImportError:  # pragma: no cover - compatibility fallback for older HA
+    from homeassistant.const import ENERGY_KILO_WATT_HOUR, POWER_KILO_WATT
+
+    class UnitOfEnergy:  # type: ignore[no-redef]
+        """Fallback UnitOfEnergy for older Home Assistant versions."""
+
+        KILO_WATT_HOUR = ENERGY_KILO_WATT_HOUR
+
+    class UnitOfPower:  # type: ignore[no-redef]
+        """Fallback UnitOfPower for older Home Assistant versions."""
+
+        KILO_WATT = POWER_KILO_WATT
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
+try:
+    from homeassistant.helpers.entity import EntityCategory
+except ImportError:  # pragma: no cover - compatibility fallback for older HA
+    try:
+        from homeassistant.const import EntityCategory
+    except ImportError:  # pragma: no cover - last-resort fallback
+        class EntityCategory(str, Enum):
+            """Fallback entity category for old Home Assistant versions."""
+
+            DIAGNOSTIC = "diagnostic"
 
 from .const import DOMAIN
 from .helpers import device_info
@@ -96,12 +120,32 @@ async def async_setup_entry(hass: HomeAssistant, entry, async_add_entities):
         for ec in meter.get("energy_communities", []):
             ec_id = ec.get("id", "")
             ec_name = ec.get("name", "")
-            entities.append(EnergyCommunityOwnCoverageSensor(coordinator, meter_id, ec_id, ec_name, device))
-            entities.append(EnergyCommunityConsumptionSensor(coordinator, meter_id, ec_id, ec_name, device))
+            entities.append(
+                EnergyCommunityOwnCoverageSensor(
+                    coordinator,
+                    meter_id,
+                    ec_id=ec_id,
+                    ec_name=ec_name,
+                    device=device,
+                )
+            )
+            entities.append(
+                EnergyCommunityConsumptionSensor(
+                    coordinator,
+                    meter_id,
+                    ec_id=ec_id,
+                    ec_name=ec_name,
+                    device=device,
+                )
+            )
 
     # Unread messages sensor
     if first_meter_device:
-        entities.append(UnreadMessagesSensor(coordinator, first_meter_device[0], first_meter_device[1]))
+        entities.append(
+            UnreadMessagesSensor(
+                coordinator, first_meter_device[0], first_meter_device[1]
+            )
+        )
 
     async_add_entities(entities)
 
@@ -137,10 +181,12 @@ class MeterReadingSensor(_BaseSensor):
 
     @property
     def native_value(self):
+        """Return the total meter reading."""
         return self._meter().get("meter_reading")
 
     @property
     def extra_state_attributes(self):
+        """Return extra attributes for the meter reading."""
         m = self._meter()
         attrs = {}
         if m.get("meter_reading_timestamp"):
@@ -165,6 +211,7 @@ class DailyConsumptionSensor(_BaseSensor):
 
     @property
     def native_value(self):
+        """Return yesterday's consumption."""
         return self._meter().get("yesterday_consumption")
 
 
@@ -183,6 +230,7 @@ class WeeklyConsumptionSensor(_BaseSensor):
 
     @property
     def native_value(self):
+        """Return last 7 days consumption."""
         return self._meter().get("weekly_consumption")
 
 
@@ -201,11 +249,13 @@ class MonthlyConsumptionSensor(_BaseSensor):
 
     @property
     def native_value(self):
+        """Return current month consumption."""
         trend = self._meter().get("monthly_trend_current")
         return trend.get("sum") if trend else None
 
     @property
     def extra_state_attributes(self):
+        """Return monthly trend attributes."""
         trend = self._meter().get("monthly_trend_current")
         if not trend:
             return {}
@@ -231,11 +281,13 @@ class MonthlyConsumptionPreviousSensor(_BaseSensor):
 
     @property
     def native_value(self):
+        """Return previous month consumption."""
         trend = self._meter().get("monthly_trend_previous")
         return trend.get("sum") if trend else None
 
     @property
     def extra_state_attributes(self):
+        """Return previous month trend attributes."""
         trend = self._meter().get("monthly_trend_previous")
         if not trend:
             return {}
@@ -260,6 +312,7 @@ class DailyAverageSensor(_BaseSensor):
 
     @property
     def native_value(self):
+        """Return daily average consumption."""
         trend = self._meter().get("monthly_trend_current")
         if trend and trend.get("per_day"):
             return round(trend["per_day"], 2)
@@ -280,6 +333,7 @@ class ContractPowerSensor(_BaseSensor):
 
     @property
     def native_value(self):
+        """Return contracted power."""
         return self._meter().get("contract_power")
 
 
@@ -302,12 +356,14 @@ class LastInvoiceAmountSensor(_BaseSensor):
 
     @property
     def native_value(self):
+        """Return last invoice amount."""
         account = self.coordinator.data.get("accounts", {}).get(self._can, {})
         invoices = account.get("invoices", [])
         return invoices[0].get("total") if invoices else None
 
     @property
     def extra_state_attributes(self):
+        """Return invoice history attributes."""
         account = self.coordinator.data.get("accounts", {}).get(self._can, {})
         invoices = account.get("invoices", [])
         if not invoices:
@@ -343,6 +399,7 @@ class LastInvoiceDateSensor(_BaseSensor):
 
     @property
     def native_value(self):
+        """Return last invoice date."""
         account = self.coordinator.data.get("accounts", {}).get(self._can, {})
         invoices = account.get("invoices", [])
         if invoices and invoices[0].get("date"):
@@ -369,12 +426,14 @@ class InstallmentAmountSensor(_BaseSensor):
 
     @property
     def native_value(self):
+        """Return installment amount."""
         account = self.coordinator.data.get("accounts", {}).get(self._can, {})
         inst = account.get("installment")
         return inst.get("amount") if inst else None
 
     @property
     def extra_state_attributes(self):
+        """Return installment details."""
         account = self.coordinator.data.get("accounts", {}).get(self._can, {})
         inst = account.get("installment")
         if not inst:
@@ -400,6 +459,7 @@ class NextInstallmentDateSensor(_BaseSensor):
 
     @property
     def native_value(self):
+        """Return next installment due date."""
         account = self.coordinator.data.get("accounts", {}).get(self._can, {})
         inst = account.get("installment")
         if inst and inst.get("next_due_date"):
@@ -426,6 +486,7 @@ class SupplierSensor(_BaseSensor):
 
     @property
     def native_value(self):
+        """Return energy supplier name."""
         return self._meter().get("supplier")
 
 
@@ -442,6 +503,7 @@ class SmartMeterTypeSensor(_BaseSensor):
 
     @property
     def native_value(self):
+        """Return smart meter type."""
         return self._meter().get("smart_meter_type")
 
 
@@ -458,6 +520,7 @@ class GridTrafficLightSensor(_BaseSensor):
 
     @property
     def native_value(self):
+        """Return grid traffic light status."""
         return self._meter().get("traffic_light")
 
 
@@ -473,14 +536,17 @@ class EnergyCommunityOwnCoverageSensor(_BaseSensor):
     _attr_native_unit_of_measurement = UnitOfEnergy.KILO_WATT_HOUR
     _attr_icon = "mdi:solar-power"
 
-    def __init__(self, coordinator, meter_id, ec_id, ec_name, device):
+    def __init__(self, coordinator, meter_id, *, ec_id, ec_name, device):
         super().__init__(coordinator, meter_id, device)
         self._ec_id = ec_id
-        self._attr_unique_id = f"{meter_id}_ec_{hashlib.sha256(ec_id.encode()).hexdigest()[:12]}_own_coverage"
+        self._attr_unique_id = (
+            f"{meter_id}_ec_{hashlib.sha256(ec_id.encode()).hexdigest()[:12]}_own_coverage"
+        )
         self._attr_translation_placeholders = {"energy_community_name": ec_name}
 
     @property
     def native_value(self):
+        """Return energy community own coverage."""
         for ec in self._meter().get("energy_communities", []):
             if ec["id"] == self._ec_id:
                 return ec.get("own_coverage")
@@ -496,14 +562,17 @@ class EnergyCommunityConsumptionSensor(_BaseSensor):
     _attr_native_unit_of_measurement = UnitOfEnergy.KILO_WATT_HOUR
     _attr_icon = "mdi:home-lightning-bolt"
 
-    def __init__(self, coordinator, meter_id, ec_id, ec_name, device):
+    def __init__(self, coordinator, meter_id, *, ec_id, ec_name, device):
         super().__init__(coordinator, meter_id, device)
         self._ec_id = ec_id
-        self._attr_unique_id = f"{meter_id}_ec_{hashlib.sha256(ec_id.encode()).hexdigest()[:12]}_consumption"
+        self._attr_unique_id = (
+            f"{meter_id}_ec_{hashlib.sha256(ec_id.encode()).hexdigest()[:12]}_consumption"
+        )
         self._attr_translation_placeholders = {"energy_community_name": ec_name}
 
     @property
     def native_value(self):
+        """Return energy community consumption."""
         for ec in self._meter().get("energy_communities", []):
             if ec["id"] == self._ec_id:
                 return ec.get("consumption")
@@ -529,6 +598,7 @@ class MeterRegisterSensor(_BaseSensor):
 
     @property
     def native_value(self):
+        """Return meter register reading."""
         for reg in self._meter().get("meter_registers", []):
             if reg.get("reference_number") == self._reference_number:
                 return reg.get("value")
@@ -536,6 +606,7 @@ class MeterRegisterSensor(_BaseSensor):
 
     @property
     def extra_state_attributes(self):
+        """Return register metadata."""
         for reg in self._meter().get("meter_registers", []):
             if reg.get("reference_number") == self._reference_number:
                 attrs = {"reference_number": self._reference_number}
@@ -561,6 +632,7 @@ class UnreadMessagesSensor(_BaseSensor):
 
     @property
     def native_value(self):
+        """Return count of unread messages."""
         messages = self.coordinator.data.get("messages", [])
         return len([m for m in messages if not m.get("read", True)])
 
@@ -583,10 +655,12 @@ class TotalConsumptionSensor(_BaseSensor):
 
     @property
     def native_value(self):
+        """Return total billing period consumption."""
         return self._meter().get("total_consumption")
 
     @property
     def extra_state_attributes(self):
+        """Return consumption period breakdown."""
         periods = self._meter().get("consumption_periods", [])
         if not periods:
             return {}
@@ -618,6 +692,7 @@ class MoveInDateSensor(_BaseSensor):
 
     @property
     def native_value(self):
+        """Return contract move-in date."""
         d = self._meter().get("move_in_date")
         if d:
             try:
@@ -640,4 +715,5 @@ class AddressSensor(_BaseSensor):
 
     @property
     def native_value(self):
+        """Return supply point address."""
         return self._meter().get("address")

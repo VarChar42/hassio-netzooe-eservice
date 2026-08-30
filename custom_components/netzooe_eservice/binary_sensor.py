@@ -1,6 +1,7 @@
 """NetzOÖ eService binary sensors."""
 from __future__ import annotations
 
+from enum import Enum
 import hashlib
 import logging
 
@@ -8,10 +9,19 @@ from homeassistant.components.binary_sensor import (
     BinarySensorDeviceClass,
     BinarySensorEntity,
 )
-from homeassistant.const import EntityCategory
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
+try:
+    from homeassistant.helpers.entity import EntityCategory
+except ImportError:  # pragma: no cover - compatibility fallback for older HA
+    try:
+        from homeassistant.const import EntityCategory
+    except ImportError:  # pragma: no cover - last-resort fallback
+        class EntityCategory(str, Enum):
+            """Fallback entity category for old Home Assistant versions."""
+
+            DIAGNOSTIC = "diagnostic"
 
 from .const import DOMAIN
 from .helpers import device_info
@@ -47,7 +57,15 @@ async def async_setup_entry(hass: HomeAssistant, entry, async_add_entities):
         for ec in meter.get("energy_communities", []):
             ec_id = ec.get("id", "")
             ec_name = ec.get("name", "")
-            entities.append(EnergyCommunityActiveSensor(coordinator, meter_id, ec_id, ec_name, device))
+            entities.append(
+                EnergyCommunityActiveSensor(
+                    coordinator,
+                    meter_id,
+                    ec_id=ec_id,
+                    ec_name=ec_name,
+                    device=device,
+                )
+            )
 
     async_add_entities(entities)
 
@@ -80,6 +98,7 @@ class SmartMeterActiveSensor(_BaseBinarySensor):
 
     @property
     def is_on(self):
+        """Return whether the smart meter is active."""
         return self._meter().get("smart_meter_active", False)
 
 
@@ -97,6 +116,7 @@ class DisconnectionNotificationSensor(_BaseBinarySensor):
 
     @property
     def is_on(self):
+        """Return whether a disconnection notification exists."""
         return self._meter().get("disconnection_notification", False)
 
 
@@ -114,6 +134,7 @@ class PaperlessBillingSensor(_BaseBinarySensor):
 
     @property
     def is_on(self):
+        """Return whether paperless billing is enabled."""
         account = self.coordinator.data.get("accounts", {}).get(self._can, {})
         return account.get("paperless", False)
 
@@ -125,14 +146,17 @@ class EnergyCommunityActiveSensor(_BaseBinarySensor):
     _attr_entity_category = EntityCategory.DIAGNOSTIC
     _attr_icon = "mdi:solar-power-variant"
 
-    def __init__(self, coordinator, meter_id, ec_id, ec_name, device):
+    def __init__(self, coordinator, meter_id, *, ec_id, ec_name, device):
         super().__init__(coordinator, meter_id, device)
         self._ec_id = ec_id
-        self._attr_unique_id = f"{meter_id}_ec_{hashlib.sha256(ec_id.encode()).hexdigest()[:12]}_active"
+        self._attr_unique_id = (
+            f"{meter_id}_ec_{hashlib.sha256(ec_id.encode()).hexdigest()[:12]}_active"
+        )
         self._attr_translation_placeholders = {"energy_community_name": ec_name}
 
     @property
     def is_on(self):
+        """Return whether the energy community membership is active."""
         for ec in self._meter().get("energy_communities", []):
             if ec["id"] == self._ec_id:
                 return ec.get("status") == "ACTIVE"

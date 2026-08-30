@@ -1,0 +1,33 @@
+[MASTER]
+# Add files or directories matching the regex patterns to the ignore-list
+ignore-patterns=.*_pb2.py,test_.*?\.py
+
+[MESSAGES CONTROL]
+# Disable HA-specific design warnings from entity/setup patterns
+disable=
+    too-few-public-methods,
+    duplicate-code,
+    too-many-locals,
+    too-many-branches,
+    too-many-statements,
+    too-many-nested-blocks,
+    too-many-arguments,
+
+[BASIC]
+# Good variable names which should always be accepted, separated by a comma
+good-names=i,j,k,ex,Run,_
+
+[DESIGN]
+# Minimum number of public methods for a class (set to 0 for HA entity classes)
+min-public-methods=0
+
+[FORMAT]
+# Maximum number of characters on a single line
+max-line-length=100
+
+[REPORTS]
+# Disable report output
+reports=no
+
+# Set the output format
+output-format=parseable
