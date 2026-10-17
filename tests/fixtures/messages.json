@@ -1,0 +1,12 @@
+{
+  "partnerMessages": [
+    {
+      "id": "1",
+      "read": false
+    },
+    {
+      "id": "2",
+      "read": true
+    }
+  ]
+}

@@ -1,0 +1,763 @@
+{
+  "contractAccountNumber": "200100000001",
+  "businessPartnerNumber": "1000000001",
+  "description": "Max Mustermann",
+  "active": true,
+  "branch": "STROM",
+  "address": {
+    "street": "Musterstraße",
+    "housenumber": "1",
+    "postcode": "4020",
+    "city": "Linz",
+    "country": "AUSTRIA"
+  },
+  "billedByProvider": false,
+  "bankAccountIn": {},
+  "bankAccountOut": {},
+  "invoiceSettings": {},
+  "contracts": [
+    {
+      "contractNumber": "3000000001",
+      "branch": "STROM",
+      "scaleType": "EEG 7ngem",
+      "active": true,
+      "moveInDate": "2019-12-03",
+      "moveOutDate": "9999-12-31",
+      "consumptions": {
+        "values": [
+          {
+            "from": "2025-06-16",
+            "to": "2026-05-31",
+            "value": 13711,
+            "nrOfDays": 350,
+            "consumptionPerDay": 39.174285714285716
+          },
+          {
+            "from": "2025-06-01",
+            "to": "2025-06-15",
+            "value": 305,
+            "nrOfDays": 15,
+            "consumptionPerDay": 20.333333333333332
+          },
+          {
+            "from": "2024-06-01",
+            "to": "2025-05-31",
+            "value": 12079,
+            "nrOfDays": 365,
+            "consumptionPerDay": 33.09315068493151
+          },
+          {
+            "from": "2023-06-01",
+            "to": "2024-05-31",
+            "value": 11178,
+            "nrOfDays": 366,
+            "consumptionPerDay": 30.540983606557376
+          },
+          {
+            "from": "2022-06-01",
+            "to": "2023-05-31",
+            "value": 11429,
+            "nrOfDays": 365,
+            "consumptionPerDay": 31.312328767123287
+          },
+          {
+            "from": "2021-06-01",
+            "to": "2022-05-31",
+            "value": 7902,
+            "nrOfDays": 365,
+            "consumptionPerDay": 21.649315068493152
+          },
+          {
+            "from": "2020-06-01",
+            "to": "2021-05-31",
+            "value": 10350,
+            "nrOfDays": 365,
+            "consumptionPerDay": 28.356164383561644
+          },
+          {
+            "from": "2019-12-03",
+            "to": "2020-05-31",
+            "value": 3913,
+            "nrOfDays": 181,
+            "consumptionPerDay": 21.61878453038674
+          }
+        ],
+        "totalConsumption": 70867,
+        "largestConsumption": {
+          "from": "2025-06-16",
+          "to": "2026-05-31",
+          "value": 13711,
+          "nrOfDays": 350,
+          "consumptionPerDay": 39.174285714285716
+        }
+      },
+      "readingsHistory": {
+        "calculatedConsumptionSum": 0,
+        "relevantConsumptionSum": 0,
+        "relevantConsumptionUnit": null,
+        "maxConsumptionPerDay": 0,
+        "readingsPerMeter": {}
+      },
+      "editableReadings": {
+        "newReadingPossible": false
+      },
+      "pointOfDelivery": {
+        "meterPointAdministrationNumber": "AT0030000000000000000000000100001",
+        "meter": {
+          "meterNumber": "1234567"
+        },
+        "profiles": [
+          {
+            "from": "2023-10-18",
+            "to": "2026-10-16",
+            "granularity": "QUARTER_OF_AN_HOUR",
+            "profileType": "ACTIVE_CURRENT"
+          }
+        ],
+        "activationStatus": "SMART_METER_DEACTIVATION_POSSIBLE",
+        "dailyDispatchStatus": "HIDE",
+        "monthlyDispatchStatus": "HIDE",
+        "retroactiveActivationDate": "2026-08-28",
+        "deviceKeyStatus": "ACTIVE",
+        "snapStatus": "ACTIVE",
+        "monthlyTrend": {
+          "consumptionOld": {
+            "sum": 575.0,
+            "perDay": 19.16666666666667,
+            "days": 30
+          },
+          "consumptionNew": {
+            "sum": 833.0,
+            "perDay": 27.76666666666667,
+            "days": 30
+          },
+          "timerangeOld": {
+            "from": "2026-08-18T00:00:00",
+            "to": "2026-09-16T23:59:59"
+          },
+          "timerangeNew": {
+            "from": "2026-09-17T00:00:00",
+            "to": "2026-10-17T23:59:59"
+          }
+        },
+        "yearlyTrend": {
+          "consumptionOld": {
+            "sum": 12422.984,
+            "perDay": 34.03557260273973,
+            "days": 365
+          },
+          "consumptionNew": {
+            "sum": 14225.62,
+            "perDay": 38.97430136986301,
+            "days": 365
+          },
+          "timerangeOld": {
+            "from": "2024-09-30T00:00:00",
+            "to": "2025-09-29T23:59:59"
+          },
+          "timerangeNew": {
+            "from": "2025-09-30T00:00:00",
+            "to": "2026-09-30T23:59:59"
+          }
+        },
+        "lastReadings": {
+          "values": [
+            {
+              "meternumber": "1234567",
+              "equipmentnumber": "000000000010000001",
+              "registernumber": "002",
+              "integerPlaces": 2,
+              "decimalPlaces": 3,
+              "referenceNumber": "1.6.0",
+              "caloricValue": 0.0,
+              "additionalValue": 0.0,
+              "oldResult": {
+                "integerPlaces": 0,
+                "decimalPlaces": 0.0,
+                "plausible": true,
+                "readingValue": 0.0
+              },
+              "newResult": {
+                "timestamp": "2026-10-01T00:00:00",
+                "integerPlaces": 13,
+                "decimalPlaces": 0.831,
+                "plausible": true,
+                "readingValue": 13.831
+              },
+              "calculatedConsumption": 0.0,
+              "unitForCalculatedConsumption": "KW",
+              "relevantConsumption": 0.0,
+              "monthlyPeakReading": true
+            },
+            {
+              "meternumber": "1234567",
+              "equipmentnumber": "000000000010000001",
+              "registernumber": "004",
+              "integerPlaces": 6,
+              "decimalPlaces": 3,
+              "referenceNumber": "1.8.1",
+              "caloricValue": 0.0,
+              "additionalValue": 0.0,
+              "oldResult": {
+                "integerPlaces": 0,
+                "decimalPlaces": 0.0,
+                "plausible": true,
+                "readingValue": 0.0
+              },
+              "newResult": {
+                "timestamp": "2026-10-17T00:15:00",
+                "integerPlaces": 100265,
+                "decimalPlaces": 0.928,
+                "plausible": true,
+                "readingValue": 100265.928
+              },
+              "calculatedConsumption": 0.0,
+              "unitForCalculatedConsumption": "KWH",
+              "relevantConsumption": 0.0,
+              "monthlyPeakReading": false
+            }
+          ],
+          "newReadingPossible": false
+        },
+        "minimumDate": "2023-10-18",
+        "maximumDate": "2026-10-16",
+        "availableTimeRange": {
+          "from": "2023-10-18",
+          "to": "2026-10-16"
+        },
+        "smartMeterActive": true,
+        "loadProfileActive": false,
+        "availableProfileTypes": [
+          "ACTIVE_CURRENT"
+        ]
+      },
+      "smartMeterType": "ADVANCED_SMART_METER",
+      "powerGenerationUnit": false,
+      "station": "1000",
+      "subStation": "2000",
+      "generationData": {
+        "recentlyApprovedInFeed": false,
+        "inFeederInquiryPossible": false,
+        "smallInFeederActivationPossible": true,
+        "smallInFeederDeactivationPossible": false,
+        "showAnetteLight": false,
+        "anetteLightPossibleFrom": "2026-10-17",
+        "trafficLightColor": "GREEN",
+        "trafficLightReason": "NONE"
+      },
+      "energyCommunityData": {
+        "status": "HISTORICAL",
+        "timeslices": [
+          {
+            "energyCommunityId": "AT00300000000RC100000000000000001",
+            "energyCommunityName": "Sonnenstrom Gemeinschaft",
+            "from": "2025-06-16",
+            "to": "2026-10-17",
+            "status": "ACTIVE",
+            "statusText": "Aktiv",
+            "profiles": [
+              {
+                "from": "2025-06-16",
+                "to": "2026-10-17",
+                "granularity": "QUARTER_OF_AN_HOUR",
+                "profileType": "ENERGY_COMMUNITY_CONSUMPTION_PER_CONTRIBUTION_FACTOR"
+              },
+              {
+                "from": "2025-06-16",
+                "to": "2026-10-17",
+                "granularity": "QUARTER_OF_AN_HOUR",
+                "profileType": "ENERGY_COMMUNITY_OWN_COVERAGE"
+              }
+            ],
+            "profileDataAvailableFrom": "2025-06-16",
+            "profileDataAvailableTo": "2026-10-17"
+          }
+        ],
+        "energyCommunityActive": true
+      },
+      "supplier": {
+        "id": "AT000001",
+        "name": "Musterstrom GmbH"
+      },
+      "synthProfile": "Haushalt",
+      "smartMeterActivationPossible": false,
+      "loadProfileActivationPossible": false,
+      "dailyProfileDispatchActive": false,
+      "monthlyProfileDispatchActive": false,
+      "dailyProfileDispatchInactive": false,
+      "monthlyProfileDispatchInactive": false,
+      "newReadingPossible": false,
+      "amisActive": true,
+      "loadCurveActive": false,
+      "availableProfileTypes": [
+        "ACTIVE_CURRENT"
+      ],
+      "deviceKeyStatus": "ACTIVE",
+      "monthlyProfileDispatchStatus": "HIDE",
+      "dailyProfileDispatchStatus": "HIDE",
+      "nonSmart": false,
+      "amisMeter": true,
+      "profileActive": true,
+      "deviceKeyAvailable": true,
+      "optInPossible": false,
+      "reactiveCurrentProfilePresent": false
+    },
+    {
+      "contractNumber": "3000000002",
+      "branch": "STROM",
+      "scaleType": "EEG 7ngem",
+      "active": true,
+      "moveInDate": "2019-12-03",
+      "moveOutDate": "9999-12-31",
+      "consumptions": {
+        "totalConsumption": 0
+      },
+      "readingsHistory": {
+        "calculatedConsumptionSum": 0,
+        "relevantConsumptionSum": 0,
+        "relevantConsumptionUnit": null,
+        "maxConsumptionPerDay": 0,
+        "readingsPerMeter": {}
+      },
+      "editableReadings": {
+        "newReadingPossible": false
+      },
+      "pointOfDelivery": {
+        "meterPointAdministrationNumber": "AT0030000000000000000000000100002",
+        "meter": {
+          "meterNumber": "1234567"
+        },
+        "profiles": [
+          {
+            "from": "2023-10-18",
+            "to": "2026-10-16",
+            "granularity": "QUARTER_OF_AN_HOUR",
+            "profileType": "ACTIVE_CURRENT"
+          }
+        ],
+        "activationStatus": "SMART_METER_DEACTIVATION_POSSIBLE",
+        "dailyDispatchStatus": "HIDE",
+        "monthlyDispatchStatus": "HIDE",
+        "retroactiveActivationDate": "2026-08-28",
+        "deviceKeyStatus": "ACTIVE",
+        "snapStatus": "ACTIVE",
+        "lastReadings": {
+          "values": [
+            {
+              "meternumber": "1234567",
+              "equipmentnumber": "000000000010000001",
+              "registernumber": "005",
+              "integerPlaces": 6,
+              "decimalPlaces": 3,
+              "referenceNumber": "2.8.1",
+              "caloricValue": 0.0,
+              "additionalValue": 0.0,
+              "oldResult": {
+                "integerPlaces": 0,
+                "decimalPlaces": 0.0,
+                "plausible": true,
+                "readingValue": 0.0
+              },
+              "newResult": {
+                "timestamp": "2026-10-17T00:15:00",
+                "readingValue": 4100.5
+              },
+              "calculatedConsumption": 0.0,
+              "unitForCalculatedConsumption": "KWH",
+              "relevantConsumption": 0.0,
+              "monthlyPeakReading": false
+            },
+            {
+              "meternumber": "1234567",
+              "equipmentnumber": "000000000010000001",
+              "registernumber": "006",
+              "integerPlaces": 6,
+              "decimalPlaces": 3,
+              "referenceNumber": "2.8.2",
+              "caloricValue": 0.0,
+              "additionalValue": 0.0,
+              "oldResult": {
+                "integerPlaces": 0,
+                "decimalPlaces": 0.0,
+                "plausible": true,
+                "readingValue": 0.0
+              },
+              "newResult": {
+                "timestamp": "2026-10-17T00:15:00",
+                "readingValue": 900.25
+              },
+              "calculatedConsumption": 0.0,
+              "unitForCalculatedConsumption": "KWH",
+              "relevantConsumption": 0.0,
+              "monthlyPeakReading": false
+            }
+          ],
+          "newReadingPossible": false
+        },
+        "minimumDate": "2023-10-18",
+        "maximumDate": "2026-10-16",
+        "availableTimeRange": {
+          "from": "2023-10-18",
+          "to": "2026-10-16"
+        },
+        "smartMeterActive": false,
+        "loadProfileActive": false,
+        "availableProfileTypes": [
+          "ACTIVE_CURRENT"
+        ]
+      },
+      "smartMeterType": "ADVANCED_SMART_METER",
+      "powerGenerationUnit": false,
+      "station": "1000",
+      "subStation": "2000",
+      "generationData": {
+        "recentlyApprovedInFeed": false,
+        "inFeederInquiryPossible": false,
+        "smallInFeederActivationPossible": true,
+        "smallInFeederDeactivationPossible": false,
+        "showAnetteLight": false,
+        "anetteLightPossibleFrom": "2026-10-17",
+        "trafficLightColor": "GREEN",
+        "trafficLightReason": "NONE"
+      },
+      "supplier": {
+        "id": "AT000001",
+        "name": "Musterstrom GmbH"
+      },
+      "synthProfile": "Haushalt",
+      "smartMeterActivationPossible": false,
+      "loadProfileActivationPossible": false,
+      "dailyProfileDispatchActive": false,
+      "monthlyProfileDispatchActive": false,
+      "dailyProfileDispatchInactive": false,
+      "monthlyProfileDispatchInactive": false,
+      "newReadingPossible": false,
+      "amisActive": true,
+      "loadCurveActive": false,
+      "availableProfileTypes": [
+        "ACTIVE_CURRENT"
+      ],
+      "deviceKeyStatus": "ACTIVE",
+      "monthlyProfileDispatchStatus": "HIDE",
+      "dailyProfileDispatchStatus": "HIDE",
+      "nonSmart": false,
+      "amisMeter": true,
+      "profileActive": true,
+      "deviceKeyAvailable": true,
+      "optInPossible": false,
+      "reactiveCurrentProfilePresent": false
+    },
+    {
+      "contractNumber": "3000000003",
+      "branch": "STROM",
+      "scaleType": "EEG 7ngem",
+      "active": false,
+      "moveInDate": "2019-12-03",
+      "moveOutDate": "9999-12-31",
+      "consumptions": {
+        "values": [
+          {
+            "from": "2025-06-16",
+            "to": "2026-05-31",
+            "value": 13711,
+            "nrOfDays": 350,
+            "consumptionPerDay": 39.174285714285716
+          },
+          {
+            "from": "2025-06-01",
+            "to": "2025-06-15",
+            "value": 305,
+            "nrOfDays": 15,
+            "consumptionPerDay": 20.333333333333332
+          },
+          {
+            "from": "2024-06-01",
+            "to": "2025-05-31",
+            "value": 12079,
+            "nrOfDays": 365,
+            "consumptionPerDay": 33.09315068493151
+          },
+          {
+            "from": "2023-06-01",
+            "to": "2024-05-31",
+            "value": 11178,
+            "nrOfDays": 366,
+            "consumptionPerDay": 30.540983606557376
+          },
+          {
+            "from": "2022-06-01",
+            "to": "2023-05-31",
+            "value": 11429,
+            "nrOfDays": 365,
+            "consumptionPerDay": 31.312328767123287
+          },
+          {
+            "from": "2021-06-01",
+            "to": "2022-05-31",
+            "value": 7902,
+            "nrOfDays": 365,
+            "consumptionPerDay": 21.649315068493152
+          },
+          {
+            "from": "2020-06-01",
+            "to": "2021-05-31",
+            "value": 10350,
+            "nrOfDays": 365,
+            "consumptionPerDay": 28.356164383561644
+          },
+          {
+            "from": "2019-12-03",
+            "to": "2020-05-31",
+            "value": 3913,
+            "nrOfDays": 181,
+            "consumptionPerDay": 21.61878453038674
+          }
+        ],
+        "totalConsumption": 70867,
+        "largestConsumption": {
+          "from": "2025-06-16",
+          "to": "2026-05-31",
+          "value": 13711,
+          "nrOfDays": 350,
+          "consumptionPerDay": 39.174285714285716
+        }
+      },
+      "readingsHistory": {
+        "calculatedConsumptionSum": 0,
+        "relevantConsumptionSum": 0,
+        "relevantConsumptionUnit": null,
+        "maxConsumptionPerDay": 0,
+        "readingsPerMeter": {}
+      },
+      "editableReadings": {
+        "newReadingPossible": false
+      },
+      "pointOfDelivery": {
+        "meterPointAdministrationNumber": "AT0030000000000000000000000100001",
+        "meter": {
+          "meterNumber": "1234567"
+        },
+        "profiles": [
+          {
+            "from": "2023-10-18",
+            "to": "2026-10-16",
+            "granularity": "QUARTER_OF_AN_HOUR",
+            "profileType": "ACTIVE_CURRENT"
+          }
+        ],
+        "activationStatus": "SMART_METER_DEACTIVATION_POSSIBLE",
+        "dailyDispatchStatus": "HIDE",
+        "monthlyDispatchStatus": "HIDE",
+        "retroactiveActivationDate": "2026-08-28",
+        "deviceKeyStatus": "ACTIVE",
+        "snapStatus": "ACTIVE",
+        "monthlyTrend": {
+          "consumptionOld": {
+            "sum": 575.0,
+            "perDay": 19.16666666666667,
+            "days": 30
+          },
+          "consumptionNew": {
+            "sum": 833.0,
+            "perDay": 27.76666666666667,
+            "days": 30
+          },
+          "timerangeOld": {
+            "from": "2026-08-18T00:00:00",
+            "to": "2026-09-16T23:59:59"
+          },
+          "timerangeNew": {
+            "from": "2026-09-17T00:00:00",
+            "to": "2026-10-17T23:59:59"
+          }
+        },
+        "yearlyTrend": {
+          "consumptionOld": {
+            "sum": 12422.984,
+            "perDay": 34.03557260273973,
+            "days": 365
+          },
+          "consumptionNew": {
+            "sum": 14225.62,
+            "perDay": 38.97430136986301,
+            "days": 365
+          },
+          "timerangeOld": {
+            "from": "2024-09-30T00:00:00",
+            "to": "2025-09-29T23:59:59"
+          },
+          "timerangeNew": {
+            "from": "2025-09-30T00:00:00",
+            "to": "2026-09-30T23:59:59"
+          }
+        },
+        "lastReadings": {
+          "values": [
+            {
+              "meternumber": "1234567",
+              "equipmentnumber": "000000000010000001",
+              "registernumber": "002",
+              "integerPlaces": 2,
+              "decimalPlaces": 3,
+              "referenceNumber": "1.6.0",
+              "caloricValue": 0.0,
+              "additionalValue": 0.0,
+              "oldResult": {
+                "integerPlaces": 0,
+                "decimalPlaces": 0.0,
+                "plausible": true,
+                "readingValue": 0.0
+              },
+              "newResult": {
+                "timestamp": "2026-10-01T00:00:00",
+                "integerPlaces": 13,
+                "decimalPlaces": 0.831,
+                "plausible": true,
+                "readingValue": 13.831
+              },
+              "calculatedConsumption": 0.0,
+              "unitForCalculatedConsumption": "KW",
+              "relevantConsumption": 0.0,
+              "monthlyPeakReading": true
+            },
+            {
+              "meternumber": "1234567",
+              "equipmentnumber": "000000000010000001",
+              "registernumber": "004",
+              "integerPlaces": 6,
+              "decimalPlaces": 3,
+              "referenceNumber": "1.8.1",
+              "caloricValue": 0.0,
+              "additionalValue": 0.0,
+              "oldResult": {
+                "integerPlaces": 0,
+                "decimalPlaces": 0.0,
+                "plausible": true,
+                "readingValue": 0.0
+              },
+              "newResult": {
+                "timestamp": "2026-10-17T00:15:00",
+                "integerPlaces": 100265,
+                "decimalPlaces": 0.928,
+                "plausible": true,
+                "readingValue": 100265.928
+              },
+              "calculatedConsumption": 0.0,
+              "unitForCalculatedConsumption": "KWH",
+              "relevantConsumption": 0.0,
+              "monthlyPeakReading": false
+            }
+          ],
+          "newReadingPossible": false
+        },
+        "minimumDate": "2023-10-18",
+        "maximumDate": "2026-10-16",
+        "availableTimeRange": {
+          "from": "2023-10-18",
+          "to": "2026-10-16"
+        },
+        "smartMeterActive": true,
+        "loadProfileActive": false,
+        "availableProfileTypes": [
+          "ACTIVE_CURRENT"
+        ]
+      },
+      "smartMeterType": "ADVANCED_SMART_METER",
+      "powerGenerationUnit": false,
+      "station": "1000",
+      "subStation": "2000",
+      "generationData": {
+        "recentlyApprovedInFeed": false,
+        "inFeederInquiryPossible": false,
+        "smallInFeederActivationPossible": true,
+        "smallInFeederDeactivationPossible": false,
+        "showAnetteLight": false,
+        "anetteLightPossibleFrom": "2026-10-17",
+        "trafficLightColor": "GREEN",
+        "trafficLightReason": "NONE"
+      },
+      "energyCommunityData": {
+        "status": "HISTORICAL",
+        "timeslices": [
+          {
+            "energyCommunityId": "AT00300000000RC100000000000000001",
+            "energyCommunityName": "Sonnenstrom Gemeinschaft",
+            "from": "2025-06-16",
+            "to": "2026-10-17",
+            "status": "ACTIVE",
+            "statusText": "Aktiv",
+            "profiles": [
+              {
+                "from": "2025-06-16",
+                "to": "2026-10-17",
+                "granularity": "QUARTER_OF_AN_HOUR",
+                "profileType": "ENERGY_COMMUNITY_CONSUMPTION_PER_CONTRIBUTION_FACTOR"
+              },
+              {
+                "from": "2025-06-16",
+                "to": "2026-10-17",
+                "granularity": "QUARTER_OF_AN_HOUR",
+                "profileType": "ENERGY_COMMUNITY_OWN_COVERAGE"
+              }
+            ],
+            "profileDataAvailableFrom": "2025-06-16",
+            "profileDataAvailableTo": "2026-10-17"
+          }
+        ],
+        "energyCommunityActive": true
+      },
+      "supplier": {
+        "id": "AT000001",
+        "name": "Musterstrom GmbH"
+      },
+      "synthProfile": "Haushalt",
+      "smartMeterActivationPossible": false,
+      "loadProfileActivationPossible": false,
+      "dailyProfileDispatchActive": false,
+      "monthlyProfileDispatchActive": false,
+      "dailyProfileDispatchInactive": false,
+      "monthlyProfileDispatchInactive": false,
+      "newReadingPossible": false,
+      "amisActive": true,
+      "loadCurveActive": false,
+      "availableProfileTypes": [
+        "ACTIVE_CURRENT"
+      ],
+      "deviceKeyStatus": "ACTIVE",
+      "monthlyProfileDispatchStatus": "HIDE",
+      "dailyProfileDispatchStatus": "HIDE",
+      "nonSmart": false,
+      "amisMeter": true,
+      "profileActive": true,
+      "deviceKeyAvailable": true,
+      "optInPossible": false,
+      "reactiveCurrentProfilePresent": false
+    }
+  ],
+  "productChangeAvailable": false,
+  "disconnectionNotification": {},
+  "editable": true,
+  "invoices": [
+    {
+      "invoiceNumber": "INV-1",
+      "invoiceDate": "2026-01-15",
+      "total": 412.5
+    },
+    {
+      "invoiceNumber": "INV-2",
+      "invoiceDate": "2026-07-15",
+      "total": 389.1
+    }
+  ],
+  "installmentAgreement": {
+    "currentAmount": 95.0,
+    "cycle": "MONTHLY",
+    "beginDate": "2026-08-01",
+    "endDate": "2027-07-31",
+    "installments": [
+      {
+        "dueDate": "2026-11-05"
+      }
+    ]
+  }
+}

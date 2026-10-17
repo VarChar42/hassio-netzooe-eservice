@@ -1,0 +1,66 @@
+[
+  {
+    "meterPointAdministrationNumber": "AT0030000000000000000000000100001",
+    "from": "2026-10-10T00:00:00",
+    "to": "2026-10-16T23:59:59",
+    "granularity": "DAY",
+    "type": "ACTIVE_CURRENT",
+    "unit": "KWH",
+    "profileValues": [
+      {
+        "datetime": "2026-10-09T22:00:00Z",
+        "value": 23.495,
+        "status": "VALID"
+      },
+      {
+        "datetime": "2026-10-10T22:00:00Z",
+        "value": 31.153,
+        "status": "VALID"
+      },
+      {
+        "datetime": "2026-10-11T22:00:00Z",
+        "value": 23.342,
+        "status": "VALID"
+      },
+      {
+        "datetime": "2026-10-12T22:00:00Z",
+        "value": 32.648,
+        "status": "VALID"
+      },
+      {
+        "datetime": "2026-10-13T22:00:00Z",
+        "value": 15.027,
+        "status": "VALID"
+      },
+      {
+        "datetime": "2026-10-14T22:00:00Z",
+        "value": 19.321,
+        "status": "VALID"
+      },
+      {
+        "datetime": "2026-10-15T22:00:00Z",
+        "value": 41.083,
+        "status": "VALID"
+      }
+    ],
+    "minimum": {
+      "value": 15.027,
+      "unit": "KWH",
+      "dateTime": "2026-10-13T22:00:00Z"
+    },
+    "maximum": {
+      "value": 41.083,
+      "unit": "KWH",
+      "dateTime": "2026-10-15T22:00:00Z"
+    },
+    "average": {
+      "value": 26.58128571428571,
+      "unit": "KWH"
+    },
+    "sum": {
+      "value": 186.069,
+      "unit": "KWH"
+    },
+    "contractPower": 4.0
+  }
+]

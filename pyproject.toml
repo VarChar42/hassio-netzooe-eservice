@@ -1,0 +1,22 @@
+[project]
+name = "hassio-netzooe-eservice"
+version = "3.0.0"
+requires-python = ">=3.13"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 110
+target-version = "py313"
+
+[tool.ruff.lint]
+select = ["B", "E", "F", "I", "UP", "SIM", "RUF", "BLE", "ASYNC", "PL"]
+ignore = ["PLR0913", "PLR0917", "PLR2004", "RUF001"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["custom_components", "homeassistant"]
+combine-as-imports = true
+force-sort-within-sections = true

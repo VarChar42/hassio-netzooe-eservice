@@ -1,0 +1,45 @@
+[
+  {
+    "meterPointAdministrationNumber": "AT0030000000000000000000000100001",
+    "from": "2026-10-14T00:00:00",
+    "to": "2026-10-15T23:59:59",
+    "granularity": "DAY",
+    "type": "ENERGY_COMMUNITY_OWN_COVERAGE",
+    "energyDirection": "CONSUMPTION",
+    "unit": "KWH",
+    "profileValues": [
+      {
+        "datetime": "2026-10-13T22:00:00Z",
+        "value": 5.832559,
+        "status": "VALID"
+      },
+      {
+        "datetime": "2026-10-14T22:00:00Z",
+        "value": 10.443008,
+        "status": "STATUS_98"
+      }
+    ],
+    "minimum": {
+      "value": 5.832559,
+      "unit": "KWH",
+      "dateTime": "2026-10-13T22:00:00Z"
+    },
+    "maximum": {
+      "value": 10.443008,
+      "unit": "KWH",
+      "dateTime": "2026-10-14T22:00:00Z"
+    },
+    "average": {
+      "value": 8.1377835,
+      "unit": "KWH"
+    },
+    "sum": {
+      "value": 16.275567,
+      "unit": "KWH"
+    },
+    "contractPower": 4.0,
+    "energyCommunityId": "AT00300000000RC100000000000000001",
+    "energyCommunityName": "Sonnenstrom Gemeinschaft",
+    "obisCode": "1-1:2.9.0 G.03"
+  }
+]

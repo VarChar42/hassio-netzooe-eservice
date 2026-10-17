@@ -1,0 +1,65 @@
+{
+  "businessPartners": [
+    {
+      "type": "PERSON",
+      "businessPartnerNumber": "1000000001",
+      "entity": {
+        "type": "person",
+        "fullname": "Max Mustermann"
+      },
+      "mobileMissing": false,
+      "mobileVerified": true,
+      "ecommunicationActive": true,
+      "ecommunicationInactive": false,
+      "ecommunicationStatus": "ACTIVE",
+      "email": "max@example.com"
+    }
+  ],
+  "contractAccounts": [
+    {
+      "contractAccountNumber": "200100000001",
+      "businessPartnerNumber": "1000000001",
+      "active": true,
+      "description": "Max Mustermann",
+      "address": "4020 Linz, Musterstraße 1",
+      "contracts": [
+        {
+          "contractNumber": "3000000001",
+          "meterPointAdministrationNumber": "AT0030000000000000000000000100001",
+          "branch": "STROM",
+          "active": true,
+          "scaleType": "EEG 7ngem",
+          "powerGenerationUnit": false,
+          "moveInDate": "2019-12-03",
+          "moveOutDate": "9999-12-31"
+        }
+      ],
+      "numberOfContracts": 1,
+      "branch": "STROM"
+    },
+    {
+      "contractAccountNumber": "200100000099",
+      "businessPartnerNumber": "1000000001",
+      "active": false,
+      "description": "Max Mustermann",
+      "address": "4020 Linz, Musterstraße 1",
+      "contracts": [
+        {
+          "contractNumber": "3000000001",
+          "meterPointAdministrationNumber": "AT0030000000000000000000000100001",
+          "branch": "STROM",
+          "active": true,
+          "scaleType": "EEG 7ngem",
+          "powerGenerationUnit": false,
+          "moveInDate": "2019-12-03",
+          "moveOutDate": "9999-12-31"
+        }
+      ],
+      "numberOfContracts": 1,
+      "branch": "STROM"
+    }
+  ],
+  "totalNumberOfContractAccounts": 2,
+  "totalNumberOfStromPods": 1,
+  "displaySearch": false
+}
