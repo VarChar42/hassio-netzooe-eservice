@@ -67,3 +67,7 @@ pytest
 The Home Assistant test harness needs Linux or macOS. On Windows, run it in WSL or Docker.
 
 To release, bump `version` in `manifest.json` and push to `main`. Once CI passes, it creates the tag and the GitHub release with the HACS zip attached.
+
+## License
+
+MIT
