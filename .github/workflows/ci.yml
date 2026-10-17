@@ -65,7 +65,7 @@ jobs:
         if: steps.version.outputs.exists != 'true'
         working-directory: custom_components/netzooe_eservice
         run: zip -r "$GITHUB_WORKSPACE/netzooe_eservice.zip" . -x "__pycache__/*"
-      - uses: softprops/action-gh-release@v2
+      - uses: softprops/action-gh-release@v3
         if: steps.version.outputs.exists != 'true'
         with:
           tag_name: ${{ steps.version.outputs.version }}
