@@ -1,0 +1,85 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "NetzOÖ eService",
+        "description": "Melde dich mit deinem NetzOÖ eService Konto an.",
+        "data": {
+          "username": "Benutzername",
+          "password": "Passwort"
+        }
+      },
+      "reauth_confirm": {
+        "title": "NetzOÖ eService erneut anmelden",
+        "description": "Das Passwort für {username} ist nicht mehr gültig. Bitte gib das aktuelle Passwort ein.",
+        "data": {
+          "password": "Passwort"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Verbindung zu NetzOÖ eService fehlgeschlagen",
+      "invalid_auth": "Benutzername oder Passwort ungültig",
+      "unknown": "Unerwarteter Fehler"
+    },
+    "abort": {
+      "already_configured": "Dieses Konto ist bereits eingerichtet",
+      "reauth_successful": "Erneute Anmeldung erfolgreich"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "NetzOÖ eService Optionen",
+        "data": {
+          "scan_interval": "Aktualisierungsintervall"
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "consumption_total": { "name": "Energieverbrauch" },
+      "feed_in_total": { "name": "Energieeinspeisung" },
+      "peak_power": { "name": "Monatliche Spitzenleistung" },
+      "daily_consumption": { "name": "Verbrauch gestern" },
+      "weekly_consumption": { "name": "Verbrauch letzte 7 Tage" },
+      "monthly_consumption": { "name": "Verbrauch letzte 30 Tage" },
+      "monthly_consumption_previous": { "name": "Verbrauch vorherige 30 Tage" },
+      "daily_average": { "name": "Tagesdurchschnitt" },
+      "yearly_consumption": { "name": "Verbrauch letzte 365 Tage" },
+      "total_consumption": { "name": "Abgerechneter Verbrauch" },
+      "contract_power": { "name": "Vertragsleistung" },
+      "supplier": { "name": "Energielieferant" },
+      "smart_meter_type": { "name": "Smart-Meter-Typ" },
+      "grid_traffic_light": {
+        "name": "Netzampel",
+        "state": {
+          "green": "Grün",
+          "yellow": "Gelb",
+          "red": "Rot"
+        }
+      },
+      "move_in_date": { "name": "Einzugsdatum" },
+      "address": { "name": "Adresse" },
+      "last_invoice_amount": { "name": "Letzter Rechnungsbetrag" },
+      "last_invoice_date": { "name": "Letztes Rechnungsdatum" },
+      "installment_amount": { "name": "Teilbetrag" },
+      "next_installment_date": { "name": "Nächste Teilzahlung" },
+      "register": { "name": "Zählwerk {register}" },
+      "ec_own_coverage": { "name": "{community} Eigendeckung" },
+      "ec_consumption": { "name": "{community} Verbrauch" },
+      "unread_messages": { "name": "Ungelesene Nachrichten" }
+    },
+    "binary_sensor": {
+      "smart_meter_active": { "name": "Smart Meter aktiv" },
+      "disconnection_notification": { "name": "Abschaltankündigung" },
+      "paperless_billing": { "name": "Papierlose Rechnung" },
+      "ec_active": { "name": "{community} aktiv" }
+    }
+  },
+  "exceptions": {
+    "invalid_auth": { "message": "NetzOÖ eService hat die Zugangsdaten abgelehnt" },
+    "update_failed": { "message": "Fehler beim Abrufen der NetzOÖ eService Daten: {error}" }
+  }
+}

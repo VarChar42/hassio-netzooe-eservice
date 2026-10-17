@@ -1,21 +1,85 @@
 {
-    "config": {
-        "abort": {
-            "already_configured": "Device is already configured"
-        },
-        "error": {
-            "cannot_connect": "Failed to connect",
-            "invalid_auth": "Invalid authentication",
-            "unknown": "Unexpected error"
-        },
-        "step": {
-            "user": {
-                "data": {
-                    "host": "Host",
-                    "password": "Password",
-                    "username": "Username"
-                }
-            }
+  "config": {
+    "step": {
+      "user": {
+        "title": "NetzOÖ eService",
+        "description": "Sign in with your NetzOÖ eService portal account.",
+        "data": {
+          "username": "Username",
+          "password": "Password"
         }
+      },
+      "reauth_confirm": {
+        "title": "Re-authenticate NetzOÖ eService",
+        "description": "The password for {username} is no longer valid. Please enter the current password.",
+        "data": {
+          "password": "Password"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Failed to connect to NetzOÖ eService",
+      "invalid_auth": "Invalid username or password",
+      "unknown": "Unexpected error"
+    },
+    "abort": {
+      "already_configured": "This account is already configured",
+      "reauth_successful": "Re-authentication was successful"
     }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "NetzOÖ eService options",
+        "data": {
+          "scan_interval": "Update interval"
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "consumption_total": { "name": "Energy consumption" },
+      "feed_in_total": { "name": "Energy feed-in" },
+      "peak_power": { "name": "Monthly peak power" },
+      "daily_consumption": { "name": "Consumption yesterday" },
+      "weekly_consumption": { "name": "Consumption last 7 days" },
+      "monthly_consumption": { "name": "Consumption last 30 days" },
+      "monthly_consumption_previous": { "name": "Consumption previous 30 days" },
+      "daily_average": { "name": "Daily average" },
+      "yearly_consumption": { "name": "Consumption last 365 days" },
+      "total_consumption": { "name": "Billed consumption" },
+      "contract_power": { "name": "Contract power" },
+      "supplier": { "name": "Supplier" },
+      "smart_meter_type": { "name": "Smart meter type" },
+      "grid_traffic_light": {
+        "name": "Grid traffic light",
+        "state": {
+          "green": "Green",
+          "yellow": "Yellow",
+          "red": "Red"
+        }
+      },
+      "move_in_date": { "name": "Move-in date" },
+      "address": { "name": "Address" },
+      "last_invoice_amount": { "name": "Last invoice amount" },
+      "last_invoice_date": { "name": "Last invoice date" },
+      "installment_amount": { "name": "Installment amount" },
+      "next_installment_date": { "name": "Next installment date" },
+      "register": { "name": "Register {register}" },
+      "ec_own_coverage": { "name": "{community} own coverage" },
+      "ec_consumption": { "name": "{community} consumption" },
+      "unread_messages": { "name": "Unread messages" }
+    },
+    "binary_sensor": {
+      "smart_meter_active": { "name": "Smart meter active" },
+      "disconnection_notification": { "name": "Disconnection notification" },
+      "paperless_billing": { "name": "Paperless billing" },
+      "ec_active": { "name": "{community} active" }
+    }
+  },
+  "exceptions": {
+    "invalid_auth": { "message": "NetzOÖ eService rejected the credentials" },
+    "update_failed": { "message": "Error fetching NetzOÖ eService data: {error}" }
+  }
 }

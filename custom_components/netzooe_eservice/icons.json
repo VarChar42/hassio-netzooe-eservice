@@ -1,0 +1,34 @@
+{
+  "entity": {
+    "sensor": {
+      "daily_consumption": { "default": "mdi:lightning-bolt" },
+      "weekly_consumption": { "default": "mdi:chart-bar" },
+      "monthly_consumption": { "default": "mdi:calendar-month" },
+      "monthly_consumption_previous": { "default": "mdi:calendar-month-outline" },
+      "daily_average": { "default": "mdi:chart-line" },
+      "yearly_consumption": { "default": "mdi:calendar-range" },
+      "total_consumption": { "default": "mdi:sigma" },
+      "peak_power": { "default": "mdi:flash-alert" },
+      "contract_power": { "default": "mdi:flash" },
+      "feed_in_total": { "default": "mdi:transmission-tower-import" },
+      "last_invoice_amount": { "default": "mdi:receipt-text" },
+      "last_invoice_date": { "default": "mdi:calendar-text" },
+      "installment_amount": { "default": "mdi:cash-clock" },
+      "next_installment_date": { "default": "mdi:calendar-clock" },
+      "supplier": { "default": "mdi:domain" },
+      "smart_meter_type": { "default": "mdi:meter-electric" },
+      "grid_traffic_light": { "default": "mdi:traffic-light" },
+      "move_in_date": { "default": "mdi:home-import-outline" },
+      "address": { "default": "mdi:map-marker" },
+      "ec_own_coverage": { "default": "mdi:solar-power" },
+      "ec_consumption": { "default": "mdi:home-lightning-bolt" },
+      "unread_messages": { "default": "mdi:email-outline" }
+    },
+    "binary_sensor": {
+      "smart_meter_active": { "default": "mdi:meter-electric" },
+      "disconnection_notification": { "default": "mdi:power-plug-off" },
+      "paperless_billing": { "default": "mdi:leaf" },
+      "ec_active": { "default": "mdi:solar-power-variant" }
+    }
+  }
+}
